@@ -1,6 +1,8 @@
 import styled, { keyframes, css } from 'styled-components';
 
-export const Form = styled.form`
+export const Form = styled.form.attrs(props => ({
+  formError: props.formError,
+}))`
   margin-top: 30px;
   display: flex;
   flex-direction: row;
@@ -12,6 +14,14 @@ export const Form = styled.form`
     border-radius: 4px;
     font-size: 16px;
   }
+
+  ${props =>
+    props.formError &&
+    css`
+      input {
+        border: 1px solid #e00;
+      }
+    `}
 `;
 
 const rotate = keyframes`

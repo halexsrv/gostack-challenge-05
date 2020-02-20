@@ -19,7 +19,8 @@ export const Form = styled.form.attrs(props => ({
     props.formError &&
     css`
       input {
-        border: 1px solid #e00;
+        /* border: 1px solid #e00; */
+        border: 3px solid rgba(255, 0, 0, 0.5);
       }
     `}
 `;

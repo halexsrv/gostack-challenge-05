@@ -133,3 +133,51 @@ export const IssueFilter = styled.button.attrs(props => ({
       }
     `}
 `;
+
+export const ControlPages = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 30px;
+`;
+
+export const PreviousPage = styled.button.attrs(props => ({
+  page: props.page,
+}))`
+  background: #eee;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 4px;
+  width: 100px;
+  :hover {
+    background: #ddd;
+  }
+
+  ${props =>
+    props.page === 1 &&
+    css`
+      background: #fff;
+      color: #444;
+      cursor: not-allowed;
+      opacity: 0.6;
+
+      :hover {
+        background: #eee;
+      }
+    `}
+`;
+
+export const NextPage = styled.button`
+  background: #eee;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 4px;
+  width: 100px;
+  :hover {
+    background: #ddd;
+  }
+`;

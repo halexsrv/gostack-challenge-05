@@ -10,6 +10,9 @@ import {
   IssueList,
   IssueFilterList,
   IssueFilter,
+  ControlPages,
+  PreviousPage,
+  NextPage,
 } from './styles';
 
 export default class Repository extends Component {
@@ -31,10 +34,12 @@ export default class Repository extends Component {
       { name: 'closed', label: 'Fechadas', status: false },
     ],
     repoName: '',
+    page: 1,
   };
 
   async componentDidMount() {
     const { match } = this.props;
+    const { page } = this.state;
 
     const repoName = decodeURIComponent(match.params.repository);
 
@@ -46,6 +51,7 @@ export default class Repository extends Component {
         params: {
           state: 'open',
           per_page: 5,
+          page,
         },
       }),
     ]);
@@ -57,7 +63,7 @@ export default class Repository extends Component {
     });
   }
 
-  handleFilter = filterChange => {
+  handleFilter = async filterChange => {
     const { filters } = this.state;
 
     const filtersResult = filters.map(filter => {
@@ -72,18 +78,41 @@ export default class Repository extends Component {
     });
 
     this.setState({ filters: filtersResult });
+    await this.setState({ page: 1 });
 
     this.handleIssueFilter(filterChange);
   };
 
   handleIssueFilter = async filterChange => {
     const filter = filterChange;
-    const { repoName } = this.state;
+    const { repoName, page } = this.state;
 
     const response = await api.get(`/repos/${repoName}/issues`, {
       params: {
         state: filter.name,
         per_page: 5,
+        page,
+      },
+    });
+
+    this.setState({ issues: response.data });
+  };
+
+  handleControlPage = async count => {
+    const { page, filters, repoName } = this.state;
+
+    const filter = filters.find(activeFilter => activeFilter.status === true);
+
+    this.setState({ page: page + count });
+
+    console.log(filter);
+    console.log(page + count);
+
+    const response = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state: filter.name,
+        per_page: 5,
+        page: page + count,
       },
     });
 
@@ -91,7 +120,7 @@ export default class Repository extends Component {
   };
 
   render() {
-    const { repository, issues, loading, filters } = this.state;
+    const { repository, issues, loading, filters, page } = this.state;
 
     if (loading) {
       return <Loading>Carregando</Loading>;
@@ -134,6 +163,25 @@ export default class Repository extends Component {
             </li>
           ))}
         </IssueList>
+
+        <ControlPages>
+          <PreviousPage
+            page={page}
+            onClick={() => {
+              this.handleControlPage(-1);
+            }}
+            disabled={page === 1}
+          >
+            Anterior
+          </PreviousPage>
+          <NextPage
+            onClick={() => {
+              this.handleControlPage(1);
+            }}
+          >
+            Proxima
+          </NextPage>
+        </ControlPages>
       </Container>
     );
   }

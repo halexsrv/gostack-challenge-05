@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Loading = styled.div`
   color: #fff;
@@ -100,4 +100,36 @@ export const IssueList = styled.ul`
       }
     }
   }
+`;
+
+export const IssueFilterList = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 30px;
+`;
+
+export const IssueFilter = styled.button.attrs(props => ({
+  status: props.status,
+}))`
+  background: #eee;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  border-radius: 4px;
+  width: 100px;
+  :hover {
+    background: #ddd;
+  }
+
+  ${props =>
+    props.status &&
+    css`
+      background: #333;
+      color: #fff;
+      :hover {
+        background: #444;
+      }
+    `}
 `;

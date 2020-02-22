@@ -52,13 +52,9 @@ export default class Main extends Component {
         return null;
       });
 
-      console.log(repositoryExists);
-
       if (repositoryExists) {
         throw new Error('Repositório duplicado');
       }
-
-      console.log(repositories);
 
       const response = await api.get(`/repos/${newRepo}`);
 

@@ -105,9 +105,6 @@ export default class Repository extends Component {
 
     this.setState({ page: page + count });
 
-    console.log(filter);
-    console.log(page + count);
-
     const response = await api.get(`/repos/${repoName}/issues`, {
       params: {
         state: filter.name,
